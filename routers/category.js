@@ -10,7 +10,26 @@ router.get("/", async (req, res) => {
 	if (!categoryList) {
 		res.status(500).json({ success: false });
 	} else {
-		res.send(categoryList);
+		res.status(200).send(categoryList);
+	}
+});
+
+// Get Category By Id
+
+router.get("/:id", async (req, res) => {
+	try {
+		let categoryId = req.params.id;
+		const category = await Category.findById(categoryId);
+
+		if (!category) {
+			return res
+				.status(500)
+				.json({ message: "category with given id could not find" });
+		} else {
+			res.send(category);
+		}
+	} catch (error) {
+		res.status(500).json({ message: "server encountered an error" });
 	}
 });
 
