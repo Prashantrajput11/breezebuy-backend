@@ -50,6 +50,32 @@ router.post("/", async (req, res) => {
 	res.send(category);
 });
 
+// Update Category
+
+router.put("/:id", async (req, res) => {
+	let categoryId = req.params.id;
+
+	const updateCategory = await Category.findByIdAndUpdate(
+		categoryId,
+		{
+			name: req.body.name,
+			color: req.body.color,
+			icon: req.body.icon,
+		},
+		{ new: true }
+	);
+
+	// If category id not found
+
+	if (!updateCategory) {
+		res
+			.status(500)
+			.json({ success: false, message: "not a valid category id" });
+	}
+
+	res.send(updateCategory);
+});
+
 // Delete Category By Id
 router.delete("/:id", async (req, res) => {
 	try {
