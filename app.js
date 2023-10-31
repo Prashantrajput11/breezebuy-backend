@@ -13,7 +13,7 @@ const usersRouter = require("./routers/user");
 // Middleware stack
 app.use(express.json());
 app.use(morgan("tiny"));
-app.use(`${api}/products`, productsRouter);
+app.use(`${api}/product`, productsRouter);
 app.use(`${api}/order`, ordersRouter);
 app.use(`${api}/category`, categoriesRouter);
 app.use(`${api}/user`, usersRouter);
