@@ -109,4 +109,38 @@ router.put("/:id", async (req, res) => {
 	res.send(updateProduct);
 });
 
+// Delete Product
+
+// DELETE /products/:id - Delete a product by ID
+router.delete("/:id", async (req, res) => {
+	try {
+		const productId = req.params.id;
+
+		// Attempt to find the product by ID and remove it
+		const result = await Product.findOneAndRemove({ _id: productId });
+
+		if (result) {
+			// Product found and removed successfully
+			res.status(200).json({ message: "Product deleted successfully" });
+		} else {
+			// Product not found
+			res.status(404).json({ message: "Product not found" });
+		}
+	} catch (error) {
+		// Handle any errors, e.g., database connection issues
+		res.status(500).json({ message: "Internal server error" });
+	}
+});
+// Get  products Count api
+
+router.get("/get/count", async (req, res) => {
+	const productCount = await Product.countDocuments();
+
+	if (!productCount) {
+		res.status(500).json({ success: false });
+	} else {
+		res.send({ productCount: productCount });
+	}
+});
+
 module.exports = router;
