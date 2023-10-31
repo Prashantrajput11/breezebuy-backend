@@ -72,4 +72,41 @@ router.post("/", async (req, res) => {
 	}
 });
 
+// Update Product API
+router.put("/:id", async (req, res) => {
+	// Validate Category
+	const category = await Category.findById(req.body.category);
+	if (!category) {
+		return res.status(400).send("invalid category");
+	}
+
+	// Get product Id from Req body
+	let productId = req.params.id;
+
+	const updateProduct = await Product.findByIdAndUpdate(
+		productId,
+		{
+			name: req.body.name,
+			description: req.body.description,
+			richDescription: req.body.richDescription,
+			image: req.body.image,
+			brand: req.body.brand,
+			price: req.body.price,
+			category: req.body.category,
+			countInStock: req.body.countInStock,
+			rating: req.body.rating,
+			isFeatured: req.body.isFeatured,
+		},
+		{ new: true }
+	);
+
+	// If category id not found
+
+	if (!updateProduct) {
+		res.status(500).send("product could not be updated");
+	}
+
+	res.send(updateProduct);
+});
+
 module.exports = router;
