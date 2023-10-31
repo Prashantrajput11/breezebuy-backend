@@ -143,4 +143,18 @@ router.get("/get/count", async (req, res) => {
 	}
 });
 
+// Get featured product api
+router.get("/get/featured/:count", async (req, res) => {
+	const featuredProductCount = req.params.count ? req.params.count : 0;
+	const featuredProduct = await Product.find({ isFeatured: true }).limit(
+		featuredProductCount
+	);
+
+	if (!featuredProduct) {
+		res.status(500).json({ success: false });
+	} else {
+		res.send({ featuredProduct: featuredProduct });
+	}
+});
+
 module.exports = router;
