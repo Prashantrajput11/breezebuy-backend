@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 require("dotenv/config");
 const morgan = require("morgan");
+const bodyParser = require("body-parser"); // Import body-parser
 
 const api = process.env.API_URL;
 const productsRouter = require("./routers/product");
@@ -11,12 +12,14 @@ const categoriesRouter = require("./routers/category");
 const usersRouter = require("./routers/user");
 
 // Middleware stack
+app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(express.json());
 app.use(morgan("tiny"));
 app.use(`${api}/product`, productsRouter);
 app.use(`${api}/order`, ordersRouter);
 app.use(`${api}/category`, categoriesRouter);
-app.use(`${api}/user`, usersRouter);
+app.use(`${api}/users`, usersRouter);
 
 // Connect to DB
 mongoose
